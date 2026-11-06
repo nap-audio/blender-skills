@@ -119,8 +119,12 @@ def _islands(bm):
 
 
 def _point_in_tri(p, a, b, c, n):
+    area = abs((b - a).cross(c - a).dot(n))
+    if area == 0:
+        return False
+    tolerance = area * 1e-7  # Relative area keeps millimetre hardware scale-invariant.
     for u, v in ((a, b), (b, c), (c, a)):
-        if (v - u).cross(p - u).dot(n) < -1e-9:
+        if (v - u).cross(p - u).dot(n) < -tolerance:
             return False
     return True
 
